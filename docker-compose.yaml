@@ -1,0 +1,30 @@
+version: "3.5"
+
+networks: 
+  net-flask-jwt:
+    name: net-flask-jwt
+    driver: bridge
+    ipam: 
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24
+
+services:
+  flask-jwt:
+    hostname: flask-jwt
+    build: .docker/python
+    labels:
+      com.dev.linux.author: "Andre L S Ferreira"
+      com.dev.linux.description: "Learning about structure JWT server in Python"
+      com.dev.linux.license: "MIT"
+    env_file:
+      - ./flask-jwt/.env
+    volumes:
+      - ./flask-jwt:/usr/src/app
+    ports:
+      - "80:5000"
+    restart: 
+      on-failure
+    networks: 
+      net-flask-jwt:
+        ipv4_address: "172.18.0.2"
