@@ -1,1 +1,5 @@
 flask-jwt/__pycache__
+.docker/postgres/data
+.docker/python/.env
+.docker/postgres/docker/.env
+.docker/postgres/docker/create.sql
