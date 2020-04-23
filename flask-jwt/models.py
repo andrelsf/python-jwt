@@ -1,19 +1,22 @@
 from run import db
-#from datetime import datetime
+from uuid import uuid4
+from datetime import datetime
 from passlib.hash import pbkdf2_sha256 as sha256
+from sqlalchemy.dialects.postgresql import UUID
 
 class UserModel(db.Model):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    # active = db.Column(db.Boolean(), default=False, nullable=False)
-    # create_at = db.Column(db.DateTime(), default=datetime.now)
-    # update_at = db.Column(
-    #     db.DateTime(), default=datetime.now, onupdate=datetime.now
-    # )
+    active = db.Column(db.Boolean(), default=False, nullable=False)
+    createAt = db.Column(db.DateTime(), default=datetime.now)
+    updateAt = db.Column(
+         db.DateTime(), default=datetime.now, onupdate=datetime.now
+    )
 
     @staticmethod
     def generate_hash(password):
@@ -31,8 +34,12 @@ class UserModel(db.Model):
     def return_all(cls):
         def to_json(user):
             return {
+                'id': str(user.id),
+                'name': user.name,
                 'email': user.email,
-                'password': user.password
+                'active': user.active,
+                'createAt': str(user.createAt),
+                'updateAt': str(user.updateAt)
             }
         return {'users': list(map(lambda user: to_json(user), UserModel.query.all()))}
 

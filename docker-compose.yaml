@@ -7,12 +7,14 @@ networks:
     ipam: 
       driver: default
       config:
-        - subnet: 172.18.0.0/24
+        - subnet: 10.62.0.0/24
 
 services:
   flask-jwt:
     hostname: flask-jwt
-    build: .docker/python
+    build: 
+      context: .docker/python
+      dockerfile: Dockerfile
     labels:
       com.dev.linux.author: "Andre L S Ferreira"
       com.dev.linux.description: "Learning about structure JWT server in Python"
@@ -28,12 +30,12 @@ services:
     links: 
       - postgres-server
     extra_hosts: 
-      - "postgres-server:172.18.0.3"
+      - "postgres-server:10.62.0.3"
     depends_on: 
       - postgres-server
     networks: 
       net-flask-jwt:
-        ipv4_address: "172.18.0.2"
+        ipv4_address: "10.62.0.2"
   
   postgres-server:
     hostname: postgres-server
@@ -48,4 +50,4 @@ services:
       - 5432
     networks: 
       net-flask-jwt:
-        ipv4_address: "172.18.0.3"
+        ipv4_address: "10.62.0.3"

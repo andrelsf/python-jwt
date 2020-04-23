@@ -27,6 +27,19 @@ app.config['JWT_SECRET_KEY'] = environ.get('JWT_SECRET_KEY')
 jwt = JWTManager(app)
 
 """
+    Using the expired_token_loader decorator
+    will now call this function whenever an expired
+    but otherwise valid access token attemps to access an endpoint
+"""
+@jwt.expired_token_loader
+def expiredTokenCallback(expired_token):
+    token_type = expired_token['type']
+    return {
+        'status': 401,
+        'message': '{} token has expired'.format(token_type)
+    }, 401
+
+"""
     Support of token blacklisting
 """
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -44,10 +57,8 @@ import views, models, resources
 """
     Registry resources
 """
-api.add_resource( resources.UserRegistry,        '/oauth/registry')
-api.add_resource( resources.UserLogin,           '/oauth/login')
-api.add_resource( resources.UserLogoutAccess,    '/oauth/logout/access')
-api.add_resource( resources.UserLogoutRefresh,   '/oauth/logout/refresh')
-api.add_resource( resources.TokenRefresh,        '/oauth/token/refresh')
+api.add_resource( resources.UserRegistry,        '/auth/registry')
+api.add_resource( resources.UserLogin,           '/auth/login')
+api.add_resource( resources.UserLogoutAccess,    '/auth/logout/access')
 api.add_resource( resources.AllUsers,            '/users')
 api.add_resource( resources.SecretResource,      '/secret')

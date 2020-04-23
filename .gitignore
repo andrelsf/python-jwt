@@ -1,4 +1,5 @@
 flask-jwt/__pycache__
+.vscode/
 .docker/postgres/data
 .docker/python/.env
 .docker/postgres/docker/.env
