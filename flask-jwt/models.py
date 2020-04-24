@@ -29,12 +29,20 @@ class UserModel(db.Model):
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email = email).first()
+    
+    @classmethod
+    def findUser(cls, email):
+        return cls.query.filter_by(email = email, active = True).first()
+
+    @classmethod
+    def find_by_id(cls, user_id):
+        return cls.query.filter_by(id=user_id).first()
 
     @classmethod
     def return_all(cls):
         def to_json(user):
             return {
-                'id': str(user.id),
+                'id': user.id,
                 'name': user.name,
                 'email': user.email,
                 'active': user.active,
@@ -43,14 +51,8 @@ class UserModel(db.Model):
             }
         return {'users': list(map(lambda user: to_json(user), UserModel.query.all()))}
 
-    @classmethod
-    def delete_all(cls):
-        try:
-            result = db.session.query(cls).delete()
-            db.session.commit()
-            return {'message': '{} row(s) deleted'.format(result)}
-        except:
-            return {'message': 'something went wrong'}
+    def update_status_user(self, active):
+        self.active = active
 
     def save_to_db(self):
         db.session.add(self)

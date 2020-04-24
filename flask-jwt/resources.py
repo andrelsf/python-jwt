@@ -1,4 +1,4 @@
-from models import UserModel
+from models import UserModel, RevokedTokenModel
 from datetime import timedelta
 from flask_restful import Resource, reqparse
 
@@ -11,14 +11,15 @@ from flask_jwt_extended import (
     get_raw_jwt
 )
 
-parser = reqparse.RequestParser()
-parser.add_argument('name')
-parser.add_argument('email', help="This field cannot be blank", required=True)
-parser.add_argument('password', help="This field connot be blank", required=True)
-
 class UserRegistry(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('name', help="This field cannot be blank", required=True)
+        self.parser.add_argument('email', help="This field cannot be blank", required=True)
+        self.parser.add_argument('password', help="This field connot be blank", required=True)
+
     def post(self):
-        data = parser.parse_args()
+        data = self.parser.parse_args()
 
         if UserModel.find_by_email(data['email']):
             return {
@@ -42,12 +43,16 @@ class UserRegistry(Resource):
                 'message': 'Something went wrong'
             }, 500
 
-
 class UserLogin(Resource):
-    def post(self):
-        data = parser.parse_args()
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('email', help="This field cannot be blank", required=True)
+        self.parser.add_argument('password', help="This field connot be blank", required=True)
 
-        user_request = UserModel.find_by_email(data['email'])
+    def post(self):
+        data = self.parser.parse_args()
+
+        user_request = UserModel.findUser(data['email'])
         
         if not user_request:
             return {
@@ -61,7 +66,6 @@ class UserLogin(Resource):
                 expires_delta = timedelta(hours=1)
             )
             return {
-                'message': 'Logged in as {}'.format(user_request.email),
                 'access_token': access_token
             }
         else:
@@ -74,17 +78,46 @@ class UserLogoutAccess(Resource):
         try:
             revoked_token = RevokedTokenModel(jti=jti)
             revoked_token.add()
-            return {'message': 'Access token has been revoked'}, 200
-        except:
-            return {'message': 'Something went wrong'}, 500      
+            return {
+                'code': 200,
+                'message': 'Access token has been revoked'
+            }, 200
+        except Exception as err:
+            return {
+                'message': 'Something went wrong',
+                'error': str(err)
+            }, 500      
       
 class AllUsers(Resource):
+    @jwt_required
     def get(self):
         return UserModel.return_all()
+
+class UpdateStatusUser(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('active', help="This field cannot be blank", required=True)
     
     @jwt_required
-    def delete(self):
-        return UserModel.delete_all()
+    def put(self, user_id):
+        data = self.parser.parse_args()
+        user_request = UserModel.find_by_id(user_id)
+        if (user_request):
+            active = True if data['active'] == '0' else False
+            user_request.update_status_user(active=active)
+            user_request.save_to_db()
+            return {
+                'code': 200,
+                'mensage': 'User ID: {id} {status}'.format(
+                    id=user_id,
+                    # <valor> = < x > if(True) else < y >
+                    status = 'actived' if active else 'blocked'
+                )
+            }, 200
+        return {
+            'code': 406,
+            'message': 'user not found'
+        }, 406
       
 class SecretResource(Resource):
     @jwt_required
