@@ -19,3 +19,4 @@ Learning about JWT with Python3.6.
 * [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 * [Iana HTTP Status Codes](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
 * [Python if condition](http://excript.com/python/atribuicao-condicional-python.html)
+* [Flask-CORS docs](https://flask-cors.corydolphin.com/en/3.0.7/)
