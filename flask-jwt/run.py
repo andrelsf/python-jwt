@@ -4,8 +4,23 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from werkzeug.exceptions import HTTPException
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+"""
+    Flask CORS
+"""
+CORS(
+    app, 
+    resources={ r"/*": { "origins": "*" } },  
+    methods=["GET", "POST", "PUT"],
+    allow_headers=["Content-Type"]
+)
+
+"""
+    Flask-RESTful
+"""
 api = Api(app)
 
 """
