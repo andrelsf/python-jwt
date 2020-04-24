@@ -13,4 +13,5 @@ Learning about JWT with Python3.6.
 * [SQLAlchemy Docs](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 * [UUID](https://websauna.org/docs/narrative/modelling/models.html)
 * [Flask JWT Extended Docs](https://flask-jwt-extended.readthedocs.io/en/stable/changing_default_behavior/)
+* [Flask Handler Errors](https://flask.palletsprojects.com/en/1.1.x/errorhandling/#application-errors)
 

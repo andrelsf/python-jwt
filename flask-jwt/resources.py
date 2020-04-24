@@ -51,9 +51,9 @@ class UserLogin(Resource):
         
         if not user_request:
             return {
-                'status': 'fail',
-                'message': 'User {} does not exist'.format(data['email'])
-            }
+                'code': 406,
+                'message': 'User not found'
+            }, 406
         
         if UserModel.verify_hash(data['password'], user_request.password):
             access_token = create_access_token(

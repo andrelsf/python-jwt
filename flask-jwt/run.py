@@ -1,11 +1,29 @@
 from os import environ
-from flask import Flask
+from flask import Flask, json
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 api = Api(app)
+
+"""
+    Handler Errors 400 e 404
+"""
+@app.errorhandler(HTTPException)
+def handleException(error):
+    """
+        Return JSON instead of HTML for HTTP errors.
+    """
+    response = error.get_response()
+    response.data = json.dumps({
+        "code": error.code,
+        "name": error.name,
+        "description": error.description
+    })
+    response.content_type = "application/json"
+    return response
 
 """
     Parameters for SQLAlchemy
