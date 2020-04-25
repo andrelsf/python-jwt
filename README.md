@@ -26,7 +26,7 @@ Entity `Users`
 | /auth/login   | `POST` | `200`   | Create AccessToken by email and password || `OK` |
 | /auth/logout  | `POST` | `200`   | Refoke AccessToken || `OK` |
 | /auth/registry| `POST` | `201`   | Create new account by default active=False || `OK` |
-| /auth/verify  | `POST` | `200`   | Verify if access token is valid|| `TODO` |
+| /auth/verify  | `POST` | `200`   | Verify if access token is valid|| `OK` |
 
 ## References
 
