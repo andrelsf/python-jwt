@@ -46,3 +46,4 @@ Entity `Users`
 * [Iana HTTP Status Codes](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
 * [Python if condition](http://excript.com/python/atribuicao-condicional-python.html)
 * [Flask-CORS docs](https://flask-cors.corydolphin.com/en/3.0.7/)
+* [Flask JWT Custom Decorators](https://flask-jwt-extended.readthedocs.io/en/stable/custom_decorators/)
