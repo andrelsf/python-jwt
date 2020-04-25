@@ -93,6 +93,7 @@ import views, models, resources
 api.add_resource( resources.UserRegistry,        '/auth/registry')
 api.add_resource( resources.UserLogin,           '/auth/login')
 api.add_resource( resources.UserLogoutAccess,    '/auth/logout')
-api.add_resource( resources.AllUsers,            '/users')
-api.add_resource( resources.UpdateStatusUser,    '/users/<int:user_id>')
+api.add_resource( resources.AllUsers,            '/users')                  # GET
+api.add_resource( resources.SingleUser,          '/users/<int:user_id>')    # GET
+api.add_resource( resources.UpdateStatusUser,    '/users/<int:user_id>')    # PUT
 api.add_resource( resources.SecretResource,      '/secret')

@@ -99,6 +99,21 @@ class AllUsers(Resource):
             self.limit = request.args['limit']
         return UserModel.return_all(self.limit)
 
+class SingleUser(Resource):
+    @jwt_required
+    def get(self, user_id):
+        if ('isactive' in request.args):
+            user = UserModel.find_by_id(user_id)
+            return {
+                'code': 200,
+                'status': 'active' if(user.active) else 'blocked',
+                'user': user.email
+            }, 200             
+        return {
+            'user': UserModel.to_json(
+                UserModel.find_by_id(user_id)
+            )
+        }, 200
 
 class UpdateStatusUser(Resource):
     def __init__(self):
