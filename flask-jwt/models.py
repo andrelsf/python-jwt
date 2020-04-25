@@ -39,7 +39,7 @@ class UserModel(db.Model):
         return cls.query.filter_by(id=user_id).first()
 
     @classmethod
-    def return_all(cls):
+    def return_all(cls, limit):
         def to_json(user):
             return {
                 'id': user.id,
@@ -49,9 +49,19 @@ class UserModel(db.Model):
                 'createAt': str(user.createAt),
                 'updateAt': str(user.updateAt)
             }
-        return {'users': list(map(lambda user: to_json(user), UserModel.query.all()))}
+        return {
+            'users': list(
+                map(
+                    lambda user: to_json(user), UserModel.query.limit(limit).all()
+                )
+            )
+        }
 
-    def update_status_user(self, active):
+    def update_status_user(self, name, email, active, password=False):
+        self.name = name
+        self.email = email
+        if (password):
+            self.password = password
         self.active = active
 
     def save_to_db(self):
