@@ -19,6 +19,17 @@ class UserModel(db.Model):
     )
 
     @staticmethod
+    def to_json(user):
+            return {
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'active': user.active,
+                'createAt': str(user.createAt),
+                'updateAt': str(user.updateAt)
+            }
+
+    @staticmethod
     def generate_hash(password):
         return sha256.hash(password)
 
@@ -35,23 +46,26 @@ class UserModel(db.Model):
         return cls.query.filter_by(email = email, active = True).first()
 
     @classmethod
-    def find_by_id(cls, user_id):
+    def find_by_id(cls, user_id, active = False):
+        if (active):
+            return cls.query.filter_by(id=user_id, active=active).first()
         return cls.query.filter_by(id=user_id).first()
 
     @classmethod
-    def return_all(cls):
-        def to_json(user):
-            return {
-                'id': user.id,
-                'name': user.name,
-                'email': user.email,
-                'active': user.active,
-                'createAt': str(user.createAt),
-                'updateAt': str(user.updateAt)
-            }
-        return {'users': list(map(lambda user: to_json(user), UserModel.query.all()))}
+    def return_all(cls, limit):
+        return {
+            'users': list(
+                map(
+                    lambda user: cls.to_json(user), UserModel.query.limit(limit).all()
+                )
+            )
+        }
 
-    def update_status_user(self, active):
+    def update_status_user(self, name, email, active, password=False):
+        self.name = name
+        self.email = email
+        if (password):
+            self.password = password
         self.active = active
 
     def save_to_db(self):
