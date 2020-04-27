@@ -47,12 +47,21 @@ php vendor/bin/doctrine orm:schema-tool:drop --force
 php vendor/bin/doctrine orm:schema-tool:create
 ```
 
-## MapFormTable
+## Endpoints
 
 | Endpoint                 | Method   | Code Status       | Response                  | Deploy |  
 |:-------------------------|:--------:|:-----------------:|---------------------------|:------:|
 | __/api/ping__            | `GET`    | __200__/__500__   | Pong                      | `OK`   |
 
+
+### Login
+```
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d "{'email':'your_email','password':'your_passowrd'}" localhost:5000/auth/login
+```
+
+```
+curl -X GET -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer ACCESS_TOKEN_JWT" localhost/api/ping
+```
 
 ## Referencias
 

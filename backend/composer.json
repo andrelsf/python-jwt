@@ -13,7 +13,8 @@
         "doctrine/orm": "^2.5",
         "monolog/monolog": "^2.0",
         "awurth/slim-validation": "^3.2",
-        "oscarotero/psr7-middlewares": "^3.20"
+        "oscarotero/psr7-middlewares": "^3.20",
+        "guzzlehttp/guzzle": "^6.5"
     },
     "autoload": {
         "psr-4": {

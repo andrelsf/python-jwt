@@ -15,9 +15,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\FilesystemCache;
-use App\Repository\MapFormTableRepository;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\StreamHandler;
+use App\Controller\BaseController;
 use Monolog\Logger;
 use Awurth\SlimValidation\Validator;
 
@@ -138,6 +138,13 @@ $container[EntityManager::class] = function (Container $container): EntityManage
 // {
 //     return new ResitryYourRepositoryHerer($container[EntityManager::class]);
 // };
+
+/**
+ * AUTH Middleware
+ */
+$container['Auth'] = function ($c) {
+    return new BaseController($c->get('router'));
+};
 
 /**
  * Instancia GLOBAL da APP (Singleton)

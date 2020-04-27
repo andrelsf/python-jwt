@@ -5,7 +5,7 @@
  */
 $app->group('/api', function()
 {
-    $this->get('/ping', '\App\Controller\PingController:getPing');
+    $this->get('/ping', '\App\Controller\PingController:getPing')->add('Auth');
     /**
      * Dentro de api,
      */

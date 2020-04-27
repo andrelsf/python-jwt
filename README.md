@@ -18,6 +18,7 @@ Entity `Users`
 
 ## Endpoints
 
+`AUTH JWT Python Flask`
 | Endpoints     |  Method  | Status Codes| Response | Query String | DONE
 |:--------------|:--------:|:-----------:|:---------|:-------------|:----------:
 | /users        | `GET` | `200` | List of users! Default 10 users | /users?limit=20 | `OK` |
@@ -27,6 +28,14 @@ Entity `Users`
 | /auth/logout  | `POST` | `200`   | Refoke AccessToken || `OK` |
 | /auth/registry| `POST` | `201`   | Create new account by default active=False || `OK` |
 | /auth/verify  | `POST` | `200`   | Verify if access token is valid|| `OK` |
+
+`API PHP Resource`
+
+* [Backend Docs](./backend/README.md)
+
+| Endpoint      | Method   | Status Code | Response | Query String | Done       | Auth   | 
+|:--------------|:--------:|:-----------:|:---------|:-------------|:----------:|--------|
+| /api/ping     | `GET`    | `200`       |  PONG    |              | `OK`       | `YES`  |
 
 ## References
 
@@ -47,3 +56,8 @@ Entity `Users`
 * [Python if condition](http://excript.com/python/atribuicao-condicional-python.html)
 * [Flask-CORS docs](https://flask-cors.corydolphin.com/en/3.0.7/)
 * [Flask JWT Custom Decorators](https://flask-jwt-extended.readthedocs.io/en/stable/custom_decorators/)
+
+### PHP Slim and GuzzleHttp
+* [PHP GuzzleHttp](http://docs.guzzlephp.org/en/stable/overview.html)
+* [GuzzleHttp Packagist](https://packagist.org/packages/guzzlehttp/guzzle)
+* [PHP Slim Middleware](http://www.slimframework.com/docs/v3/concepts/middleware.html)
