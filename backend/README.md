@@ -1,6 +1,6 @@
 # API PHP Slim and Doctrine
 
-Struturing API with PHP Slim and Doctrine for Project X.
+Struturing API with PHP Slim and Doctrine for Project.
 
 ## API
 
@@ -51,7 +51,7 @@ php vendor/bin/doctrine orm:schema-tool:create
 
 | Endpoint                 | Method   | Code Status       | Response                  | Deploy |  
 |:-------------------------|:--------:|:-----------------:|---------------------------|:------:|
-| __/api/ping__    | `GET`    | __200__/__500__   | List of MapFormTables     | `OK`   |
+| __/api/ping__            | `GET`    | __200__/__500__   | Pong                      | `OK`   |
 
 
 ## Referencias
