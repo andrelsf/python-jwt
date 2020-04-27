@@ -1,13 +1,13 @@
 version: "3.5"
 
 networks: 
-  net-flask-jwt:
-    name: net-flask-jwt
+  net-project:
+    name: net-project
     driver: bridge
     ipam: 
       driver: default
       config:
-        - subnet: 10.62.0.0/24
+        - subnet: 10.1.0.0/24
 
 services:
   flask-jwt:
@@ -23,19 +23,20 @@ services:
       - ./.docker/python/.env
     volumes:
       - ./flask-jwt:/usr/src/app
-    ports:
-      - "80:5000"
+    expose:
+      - 5000
     restart: 
       on-failure
     links: 
       - postgres-server
     extra_hosts: 
-      - "postgres-server:10.62.0.3"
+      - "postgres-server:10.1.0.3"
+      - "backend-server:10.1.0.4"
     depends_on: 
       - postgres-server
     networks: 
-      net-flask-jwt:
-        ipv4_address: "10.62.0.2"
+      net-project:
+        ipv4_address: "10.1.0.2"
   
   postgres-server:
     hostname: postgres-server
@@ -49,5 +50,41 @@ services:
     expose: 
       - 5432
     networks: 
-      net-flask-jwt:
-        ipv4_address: "10.62.0.3"
+      net-project:
+        ipv4_address: "10.1.0.3"
+
+  backend:
+    hostname: backend-server
+    build: ./.docker/apache
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - "80:80"
+    links:
+      - mysql-server
+      - flask-jwt
+    depends_on: 
+      - mysql-server
+    restart:
+      on-failure
+    extra_hosts:
+      - "mysql-server:10.1.0.5"
+      - "flask-jwt:10.1.0.2"
+    networks:
+      net-project:
+        ipv4_address: "10.1.0.4"
+
+  mysql-server:
+    hostname: mysql-server
+    image: mysql:5.7
+    env_file:
+      - ./.docker/mysql/.env
+    volumes:
+      - ./.docker/mysql/data:/var/lib/mysql
+    expose:
+      - 3306
+    restart:
+      on-failure
+    networks:
+      net-project:
+        ipv4_address: "10.1.0.5"

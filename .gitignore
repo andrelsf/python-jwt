@@ -1,6 +1,8 @@
 flask-jwt/__pycache__/
 .vscode
-.docker/postgres/data
+backend/vendor 
+.docker/mysql/data
 .docker/python/.env
+.docker/postgres/data
 .docker/postgres/docker/.env
 .docker/postgres/docker/create.sql

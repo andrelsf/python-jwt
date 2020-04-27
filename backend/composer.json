@@ -1,0 +1,23 @@
+{
+    "name": "andrelsf/projectx",
+    "description": "Project X Manager Database",
+    "authors": [
+        {
+            "name": "Andre Ferreira",
+            "email": "andre.dev.linux@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.8",
+        "slim/psr7": "^0.4.0",
+        "doctrine/orm": "^2.5",
+        "monolog/monolog": "^2.0",
+        "awurth/slim-validation": "^3.2",
+        "oscarotero/psr7-middlewares": "^3.20"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "./src"
+        }
+    }
+}
