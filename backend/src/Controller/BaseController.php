@@ -12,7 +12,7 @@ class BaseController
     protected $router;
     private $bearerToken;
     private $clientAuthJWT;
-    const URI_AUTH_JWT = "http://flask-jwt:5000";
+    const URI_AUTH_JWT = "http://auth:5000";
 
     public function __construct(Router $router)
     {

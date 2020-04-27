@@ -10,8 +10,8 @@ networks:
         - subnet: 10.1.0.0/24
 
 services:
-  flask-jwt:
-    hostname: flask-jwt
+  auth:
+    hostname: auth
     build: 
       context: .docker/python
       dockerfile: Dockerfile
@@ -22,7 +22,7 @@ services:
     env_file:
       - ./.docker/python/.env
     volumes:
-      - ./flask-jwt:/usr/src/app
+      - ./auth:/usr/src/app
     expose:
       - 5000
     restart: 
@@ -62,14 +62,14 @@ services:
       - "80:80"
     links:
       - mysql-server
-      - flask-jwt
+      - auth
     depends_on: 
       - mysql-server
     restart:
       on-failure
     extra_hosts:
       - "mysql-server:10.1.0.5"
-      - "flask-jwt:10.1.0.2"
+      - "auth:10.1.0.2"
     networks:
       net-project:
         ipv4_address: "10.1.0.4"
