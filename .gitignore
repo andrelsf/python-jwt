@@ -1,6 +1,7 @@
-auth/__pycache__/
-.vscode
+auth/__pycache__
+auth/errors/__pycache__
 backend/vendor 
+.vscode
 .docker/backend-db/data
 .docker/backend-db/project.sql
 .docker/python/.env
@@ -9,4 +10,3 @@ backend/vendor
 .docker/auth-db/create.sql
 .docker/auth-db/.env-example
 .docker/backend-db/.env
-auth/errors/__pycache__
