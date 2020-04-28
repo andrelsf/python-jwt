@@ -5,8 +5,8 @@ ENV     APP_DIR_DATA=/usr/src/app/data/
 ENV     APP_DIR_LOGS=/usr/src/app/logs/
 
 RUN     apt update | true \
-        && apt install -y libzip-dev unzip wget curl \
-        && docker-php-ext-install pdo pdo_mysql \
+        && apt install -y libzip-dev unzip wget curl libpq5 libghc-postgresql-libpq-dev \
+        && docker-php-ext-install pdo pdo_mysql pgsql pdo_pgsql \
         && a2enmod rewrite \
         && service apache2 restart \
         && mkdir -p ${APP_DIR} \
