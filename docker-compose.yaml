@@ -16,8 +16,8 @@ services:
       context: .docker/python
       dockerfile: Dockerfile
     labels:
-      com.dev.linux.author: "Andre L S Ferreira"
-      com.dev.linux.description: "Learning about structure JWT server in Python"
+      com.dev.linux.author: "Andre Ferreira"
+      com.dev.linux.description: "Auth JWT server in Python"
       com.dev.linux.license: "MIT"
     env_file:
       - ./.docker/python/.env
@@ -28,25 +28,29 @@ services:
     restart: 
       on-failure
     links: 
-      - postgres-server
+      - auth-db
     extra_hosts: 
-      - "postgres-server:10.1.0.3"
+      - "auth-db:10.1.0.3"
       - "backend-server:10.1.0.4"
     depends_on: 
-      - postgres-server
+      - auth-db
     networks: 
       net-project:
         ipv4_address: "10.1.0.2"
   
-  postgres-server:
-    hostname: postgres-server
+  auth-db:
+    hostname: auth-db
     build:
-      context: ./.docker/postgres/docker
+      context: ./.docker/auth-db
       dockerfile: Dockerfile
+    labels:
+      com.dev.linux.author: "Andre Ferreira"
+      com.dev.linux.description: "Database PostgreSQL Auth"
+      com.dev.linux.license: "MIT"
     env_file: 
-      - ./.docker/postgres/docker/.env
+      - ./.docker/auth-db/.env
     volumes: 
-      - ./.docker/postgres/data:/var/lib/postgresql/data/
+      - ./.docker/auth-db/data:/var/lib/postgresql/data/
     expose: 
       - 5432
     networks: 
@@ -55,34 +59,46 @@ services:
 
   backend:
     hostname: backend-server
-    build: ./.docker/apache
+    build: 
+      context: ./.docker/apache
+      dockerfile: Dockerfile
+    labels:
+      com.dev.linux.author: "Andre Ferreira"
+      com.dev.linux.description: "Apache Server and PHP Slim"
+      com.dev.linux.license: "MIT"
     volumes:
       - ./backend:/usr/src/app
     ports:
       - "80:80"
     links:
-      - mysql-server
+      - backend-db
       - auth
     depends_on: 
-      - mysql-server
+      - backend-db
     restart:
       on-failure
     extra_hosts:
-      - "mysql-server:10.1.0.5"
+      - "backend-db:10.1.0.5"
       - "auth:10.1.0.2"
     networks:
       net-project:
         ipv4_address: "10.1.0.4"
 
-  mysql-server:
-    hostname: mysql-server
-    image: mysql:5.7
+  backend-db:
+    hostname: backend-db
+    build:
+      context: ./.docker/backend-db
+      dockerfile: Dockerfile
+    labels:
+      com.dev.linux.author: "Andre Ferreira"
+      com.dev.linux.description: "Database PostgreSQL Backend"
+      com.dev.linux.license: "MIT"
     env_file:
-      - ./.docker/mysql/.env
+      - ./.docker/backend-db/.env
     volumes:
-      - ./.docker/mysql/data:/var/lib/mysql
+      - ./.docker/backend-db/data:/var/lib/postgresql/data/
     expose:
-      - 3306
+      - 5432
     restart:
       on-failure
     networks:
