@@ -9,3 +9,4 @@ backend/vendor
 .docker/auth-db/create.sql
 .docker/auth-db/.env-example
 .docker/backend-db/.env
+auth/errors/__pycache__
