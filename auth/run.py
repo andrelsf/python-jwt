@@ -7,6 +7,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
+app.config.from_pyfile('./utils/config.py')
+
 """
     Flask CORS
 """
@@ -21,14 +23,6 @@ CORS(
     Flask-RESTful
 """
 api = Api(app)
-
-"""
-    Parameters for SQLAlchemy
-"""
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL_DEV')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
-app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
-
 db = SQLAlchemy(app)
 
 @app.before_first_request
@@ -38,7 +32,6 @@ def create_tables():
 """
     Adding JWT feature
 """
-app.config['JWT_SECRET_KEY'] = environ.get('JWT_SECRET_KEY')
 jwt = JWTManager(app)
 
 """
@@ -54,13 +47,6 @@ def expiredTokenCallback(expired_token):
         'message': '{} token has expired'.format(token_type)
     }, 401
 
-"""
-    Support of token blacklisting
-"""
-app.config['JWT_BLACKLIST_ENABLED'] = True
-app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-app.config['JWT_ALGORITHM'] = 'HS256'
-app.config['JWT_CSRF_METHODS'] = ['POST', 'PUT', 'PATCH', 'DELETE']
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
