@@ -1,9 +1,8 @@
 from os import environ
-from flask import Flask, json
+from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -22,23 +21,6 @@ CORS(
     Flask-RESTful
 """
 api = Api(app)
-
-"""
-    Handler Errors 400 e 404
-"""
-@app.errorhandler(HTTPException)
-def handleException(error):
-    """
-        Return JSON instead of HTML for HTTP errors.
-    """
-    response = error.get_response()
-    response.data = json.dumps({
-        "code": error.code,
-        "name": error.name,
-        "description": error.description
-    })
-    response.content_type = "application/json"
-    return response
 
 """
     Parameters for SQLAlchemy
@@ -85,6 +67,7 @@ def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return models.RevokedTokenModel.is_jti_blacklisted(jti)
 
+from errors.handler import handleException
 import views, models, resources
 
 """
