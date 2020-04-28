@@ -15,11 +15,11 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\FilesystemCache;
+use Monolog\Logger;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\StreamHandler;
-use App\Controller\BaseController;
-use Monolog\Logger;
 use Awurth\SlimValidation\Validator;
+use App\Middlewares\AuthMiddleware;
 
 /**
  * Container Resources adiciona as definições
@@ -95,7 +95,10 @@ $container['errorHandler'] = function ($c)
         return $c['response']->withStatus($statusCode)
                              ->withHeader('Content-Type', 'application/json')
                              ->withJson(
-                                    ['error' => $exception->getMessage()], 
+                                    [
+                                        'status' => $exception->getCode(),
+                                        'error' => $exception->getMessage()
+                                    ], 
                                     $statusCode,
                                     JSON_PRETTY_PRINT
                                 );
@@ -143,7 +146,7 @@ $container[EntityManager::class] = function (Container $container): EntityManage
  * AUTH Middleware
  */
 $container['Auth'] = function ($c) {
-    return new BaseController($c->get('router'));
+    return new AuthMiddleware($c->get('router'));
 };
 
 /**

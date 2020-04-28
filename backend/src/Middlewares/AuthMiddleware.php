@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Middlewares;
 
 use Exception;
 use Slim\Router;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class BaseController
+class AuthMiddleware
 {
     protected $router;
     private $bearerToken;
@@ -18,7 +18,7 @@ class BaseController
     {
         $this->router = $router;
         $this->clientAuthJWT = new \GuzzleHttp\Client([
-            'base_uri' => BaseController::URI_AUTH_JWT
+            'base_uri' => AuthMiddleware::URI_AUTH_JWT
         ]);
     }
 
@@ -34,32 +34,32 @@ class BaseController
     public function __invoke(Request $request, Response $response, $next)
     {
         if ( !$request->hasHeader('Authorization') ) {
-            return BaseController::sendResponse(
+            return AuthMiddleware::sendResponse(
                 $response, 'Unauthorized', 401
             );
         }
 
-        try {
-            $this->bearerToken = str_replace('Bearer ', '', $request->getHeader('Authorization')[0]);
-            $rspAuthJWT = $this->clientAuthJWT->get(
-                '/auth/verify',
-                [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'Accept' => 'application/json',
-                        'Authorization' => 'Bearer ' . $this->bearerToken
-                    ]
+        /**
+         * Get ACCESS TOKEN in header request
+         */
+        $this->bearerToken = str_replace('Bearer ', '', $request->getHeader('Authorization')[0]);
+        $this->clientAuthJWT->get(
+            '/auth/verify',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->bearerToken
                 ]
-            );
-            
-            $respController = $next($request, $response);
+            ]
+        );
+        
+        /**
+         * Callback Controller
+         */
+        $respController = $next($request, $response);
 
-            return $respController;
-        } catch (\GuzzleHttp\Exception\ServerException $err) {
-            return BaseController::sendResponse(
-                $response, $err->getMessage(), $err->getCode()
-            );
-        }
+        return $respController;
     }
 
     /**

@@ -68,5 +68,6 @@ curl -X GET -H "Content-Type: application/json" -H "Accept: application/json" -H
 * [PHP Slim Requests](http://www.slimframework.com/docs/v3/objects/request.html)
 * [PHP Slim EntityManager](http://www.slimframework.com/docs/v3/cookbook/database-doctrine.html)
 * [PHP Slim Docs](http://www.slimframework.com/docs/v3/tutorial/first-app.html)
+* [PHP Slim CORS](http://www.slimframework.com/docs/v3/cookbook/enable-cors.html)
 * [Doctrine DateTime](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/cookbook/working-with-datetime.html#working-with-datetime-instances)
 * [Doctrine Basic Mapping](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html)
