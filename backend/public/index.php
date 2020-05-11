@@ -20,6 +20,16 @@ require __DIR__ . "/../config/routes.php";
  */
 $app->add(new TrailingSlash(false));
 
+/**
+ * Trusted proxies
+ */
+$configLocal = require __DIR__ . "/../config/config.local.php";
+if (array_key_exists('proxy', $configLocal)) {
+    $app->add(new RKA\Middleware\IpAddress(
+        $ipAddress['checkProxyHeaders'], 
+        $ipAddress['trustedProxies']
+    ));
+}
 
 /**
  * Executa a aplicação

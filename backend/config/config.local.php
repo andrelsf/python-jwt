@@ -9,4 +9,10 @@ return [
         'user' => 'project',
         'password' => 'project'
     ],
+    'proxy' => array(
+        'checkProxyHeaders' => true,
+        'trustedProxies' => array(
+            'localhost', '127.0.0.1', '10.1.0.1'
+        )
+    )
 ];

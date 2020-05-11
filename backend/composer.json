@@ -14,7 +14,8 @@
         "monolog/monolog": "^2.0",
         "awurth/slim-validation": "^3.2",
         "oscarotero/psr7-middlewares": "^3.20",
-        "guzzlehttp/guzzle": "^6.5"
+        "guzzlehttp/guzzle": "^6.5",
+        "akrabat/ip-address-middleware": "^1.0"
     },
     "autoload": {
         "psr-4": {

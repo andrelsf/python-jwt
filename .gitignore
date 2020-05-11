@@ -12,3 +12,4 @@ backend/vendor
 .docker/auth-db/.env-example
 .docker/backend-db/.env
 auth/auth/__pycache__
+backend/composer.lock

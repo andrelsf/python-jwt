@@ -2,7 +2,6 @@
 
 namespace App\Middlewares;
 
-use Exception;
 use Slim\Router;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -33,9 +32,10 @@ class AuthMiddleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
+        $ipAddress = $request->getAttribute('ip_address');
         if ( !$request->hasHeader('Authorization') ) {
             return AuthMiddleware::sendResponse(
-                $response, 'Unauthorized', 401
+                $response, "{$ipAddress} Unauthorized", 401
             );
         }
 

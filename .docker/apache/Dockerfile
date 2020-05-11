@@ -7,6 +7,7 @@ RUN     apt update | true \
         && apt install -y libzip-dev unzip wget curl libpq5 libghc-postgresql-libpq-dev \
         && docker-php-ext-install pdo pdo_mysql pgsql pdo_pgsql \
         && a2enmod rewrite \
+        && a2enmod remoteip \
         && service apache2 restart \
         && mkdir -p ${APP_DIR}
 
@@ -16,6 +17,8 @@ RUN     apt-get update && apt-get install tzdata locales -y \
         && cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 
 ADD     ./app.default.conf /etc/apache2/sites-enabled/000-default.conf
+ADD     ./modules/charset.conf /etc/apache2/conf-enabled/charset.conf
+ADD     ./modules/remoteip.conf /etc/apache2/conf-enabled/remoteip.confS
 
 #       Add script composer install
 ADD     ./composer-install.sh /tmp/composer-install.sh
